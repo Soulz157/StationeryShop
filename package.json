@@ -1,0 +1,43 @@
+{
+  "name": "penshop",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "build": "dotenvx run -f .env -- turbo run build",
+    "dev": "dotenvx run -f .env -- turbo run dev",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "type-check": "turbo run type-check",
+    "clean": "turbo run clean && rimraf node_modules",
+    "db:migrate:dev": "dotenvx run -f .env -- pnpm --filter @penshop/database run migrate:dev",
+    "db:migrate:deploy": "dotenvx run -f .env -- pnpm --filter @penshop/database run migrate:deploy",
+    "db:migrate:reset": "dotenvx run -f .env -- pnpm --filter @penshop/database run migrate:reset",
+    "db:push": "dotenvx run -f .env -- pnpm --filter @penshop/database run push",
+    "db:generate": "dotenvx run -f .env -- pnpm --filter @penshop/database run generate",
+    "db:studio": "dotenvx run -f .env -- pnpm --filter @penshop/database run studio"
+  },
+  "devDependencies": {
+    "@dotenvx/dotenvx": "^1.57.2",
+    "eslint": "^9.39.4",
+    "eslint-config-prettier": "^10.1.8",
+    "rimraf": "^6.1.3",
+    "turbo": "^2.5.4",
+    "typescript": "^5.8.2"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "packageManager": "pnpm@10.30.0",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@nestjs/core",
+      "@prisma/client",
+      "@prisma/engines",
+      "esbuild",
+      "prisma",
+      "sharp",
+      "unrs-resolver"
+    ]
+  }
+}
