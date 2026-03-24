@@ -1,4 +1,4 @@
-# PenShop 🖊️
+# StationeryShop 🖊️
 
 PenShop is a modern, full-stack monorepo built with **Turborepo**. It features a **Next.js 15** frontend, a **NestJS** backend, and a shared **Prisma** database package.
 
@@ -14,9 +14,9 @@ PenShop is a modern, full-stack monorepo built with **Turborepo**. It features a
 ## 📁 Folder Structure
 
 ```
-pen-shop/
+Stationery-shop/
 ├── apps/
-│   ├── frontend/         # Next.js 15 web application
+│   ├── frontend/         # Next.js 16 web application
 │   └── backend/          # NestJS API handling business logic
 ├── packages/
 │   └── database/         # Shared Prisma schema, migrations, and NestJS PrismaModule

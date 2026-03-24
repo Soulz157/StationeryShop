@@ -18,7 +18,9 @@ export default function Home() {
       {/* 🟢 Navbar (Simplified) */}
       <header className="sticky top-0 z-50 w-full border-b border-stone-200 bg-white/80 backdrop-blur-md dark:border-stone-800 dark:bg-stone-950/80">
         <div className="container mx-auto flex h-16 items-center justify-between px-6">
-          <div className="text-2xl font-bold tracking-tight">PenShop.</div>
+          <div className="text-2xl font-bold tracking-tight">
+            Stationery Store.
+          </div>
           <nav className="hidden md:flex gap-6 font-medium text-sm">
             <a href="#" className="hover:text-stone-600 transition-colors">
               Pens

@@ -2,14 +2,17 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider   = "prisma-client-js"
+  provider   = "prisma-client"
   output     = "../src/generated/client"
   engineType = "client"
 }
 
+generator zod {
+  provider = "prisma-zod-generator"
+}
+
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 enum OrderStatus {

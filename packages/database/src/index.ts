@@ -1,23 +1,21 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaModule } from "./prisma.module";
+import { PrismaService } from "./prisma.service";
+import {
+  PrismaClient,
+  Prisma as PrismaTypes,
+  $Enums as PrismaEnums,
+} from "./generated/client/client";
+import type * as PrismaModels from "./generated/client/models";
 
 const globalForPrisma = globalThis as typeof globalThis & {
   prisma?: PrismaClient;
 };
 
-export const prisma =
-  globalForPrisma.prisma ??
-  new PrismaClient({
-    log:
-      process.env["NODE_ENV"] === "development"
-        ? ["query", "error", "warn"]
-        : ["error"],
-  });
-
-if (process.env["NODE_ENV"] !== "production") {
-  globalForPrisma.prisma = prisma;
-}
-
-export { PrismaClient };
-export * from "./prisma.service";
-export * from "./prisma.module";
-export * from "@prisma/client";
+export {
+  PrismaClient,
+  PrismaModule,
+  PrismaService,
+  PrismaEnums,
+  PrismaTypes,
+  PrismaModels,
+};
