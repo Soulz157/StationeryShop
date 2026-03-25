@@ -37,7 +37,11 @@ export const useAuth = () => {
         router.refresh();
       }
     } catch (error) {
-      toast.error("เกิดข้อผิดพลาดในการเชื่อมต่อ");
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error("เกิดข้อผิดพลาดในการเชื่อมต่อ");
+      }
     } finally {
       setIsLoading(false);
     }

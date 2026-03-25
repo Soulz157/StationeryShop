@@ -9,7 +9,7 @@ import {
   Phone,
   MapPin,
   Calendar,
-  Shield,
+  // Shield,
   Save,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -27,7 +27,7 @@ import { Badge } from "@/components/ui/badge";
 import { useProfile } from "@/hooks/use-profile";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import Loading from "@/components/layouts/loading";
+import { Loading } from "@/components/layouts";
 
 export default function AccountPage() {
   const router = useRouter();
