@@ -14,7 +14,8 @@
     "db:migrate:reset": "dotenvx run -f .env -- pnpm --filter @penshop/database run migrate:reset",
     "db:push": "dotenvx run -f .env -- pnpm --filter @penshop/database run push",
     "db:generate": "dotenvx run -f .env -- pnpm --filter @penshop/database run generate",
-    "db:studio": "dotenvx run -f .env -- pnpm --filter @penshop/database run studio"
+    "db:studio": "dotenvx run -f .env -- pnpm --filter @penshop/database run studio",
+    "db:seed": "dotenvx run -f .env -- pnpm --filter @penshop/database run seed"
   },
   "devDependencies": {
     "@dotenvx/dotenvx": "^1.57.2",

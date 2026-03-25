@@ -1,5 +1,4 @@
 import { NestFactory } from "@nestjs/core";
-import { ValidationPipe } from "@nestjs/common";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
 import { AppModule } from "./app.module";
 
@@ -12,13 +11,6 @@ async function bootstrap() {
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
   });
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true,
-      transform: true,
-    }),
-  );
 
   const config = new DocumentBuilder()
     .setTitle("Stationery Shop API")
@@ -27,7 +19,7 @@ async function bootstrap() {
     .addTag("Stationery Shop")
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup("api", app, documentFactory);
+  SwaggerModule.setup("docs", app, documentFactory);
 
   app.enableShutdownHooks();
   const port = process.env.SERVER_PORT ?? 8000;

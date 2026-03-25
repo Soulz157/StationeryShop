@@ -23,20 +23,45 @@ enum OrderStatus {
     FAILURE
 }
 
+enum Role {
+    USER
+    ADMIN
+}
+
 model User {
-    id      String  @id @default(uuid())
-    email   String  @unique
-    name    String?
-    address String?
-    phone   String?
+    id        String  @id @default(uuid())
+    email     String  @unique
+    password  String
+    firstName String? @map("first_name")
+    lastName  String? @map("last_name")
+    address   String?
+    phone     String?
+    role      Role    @default(USER)
 
     carts  Cart?
     orders Order[]
+    tokens UserToken[]
+
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    deletedAt DateTime?
+
+    @@map("users")
+}
+
+model UserToken {
+    id String @id @default(uuid())
+
+    user   User?   @relation(fields: [userId], references: [id])
+    userId String?
+
+    token String @unique
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    @@map("users")
+    @@index([userId])
+    @@map("user_tokens")
 }
 
 model Category {
@@ -59,6 +84,8 @@ model Product {
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+
+    @@map("products")
 }
 
 model Order {
@@ -72,6 +99,8 @@ model Order {
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+
+    @@map("orders")
 }
 
 model OrderItem {
@@ -86,6 +115,7 @@ model OrderItem {
     price    Float
 
     @@unique([orderId, productId])
+    @@map("order_items")
 }
 
 model Cart {
@@ -96,6 +126,8 @@ model Cart {
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+
+    @@map("carts")
 }
 
 model CartItem {
@@ -110,4 +142,5 @@ model CartItem {
     quantity Int @default(1)
 
     @@unique([cartId, productId])
+    @@map("cart_items")
 }
