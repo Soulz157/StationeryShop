@@ -6,7 +6,7 @@ PenShop is a modern, full-stack monorepo built with **Turborepo**. It features a
 
 - **Monorepo / Workspace**: [Turborepo](https://turbo.build/) & `pnpm`
 - **Language**: TypeScript (Strict mode)
-- **Frontend (`apps/frontend`)**: [Next.js 15](https://nextjs.org/) (App Router), Tailwind CSS, Shadcn UI
+- **Frontend (`apps/frontend`)**: [Next.js 16](https://nextjs.org/) (App Router), Tailwind CSS, Shadcn UI
 - **Backend (`apps/backend`)**: [NestJS](https://nestjs.com/)
 - **Database & ORM (`packages/database`)**: [Prisma ORM](https://www.prisma.io/) (PostgreSQL/MySQL)
 - **Environment Management**: `dotenvx` handles securely passing `.env` variables to all packages.

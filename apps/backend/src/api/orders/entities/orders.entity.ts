@@ -1,8 +1,21 @@
+import { ApiProperty } from "@nestjs/swagger";
+
 export class OrdersEntity {
-  //   id: string;
-  //   userId: string;
-  //   totalAmount: number;
-  //   status: string;
-  //   createdAt: Date;
-  //   updatedAt: Date;
+  @ApiProperty()
+  id!: string;
+
+  @ApiProperty()
+  userId!: string;
+
+  @ApiProperty()
+  totalAmount!: number;
+
+  @ApiProperty()
+  status!: string;
+
+  @ApiProperty()
+  createdAt!: Date;
+
+  @ApiProperty()
+  updatedAt!: Date;
 }

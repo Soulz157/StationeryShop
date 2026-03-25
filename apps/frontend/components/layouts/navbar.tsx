@@ -1,8 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { Button } from "../ui/button";
-import { User, ShoppingCart, LogOut } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  User,
+  ShoppingCart,
+  LogOut,
+  Book,
+  Palette,
+  PenTool,
+  Boxes,
+} from "lucide-react";
 import { useSession, signOut } from "next-auth/react";
 
 export default function Navbar() {
@@ -20,30 +28,34 @@ export default function Navbar() {
           Stationery Store.
         </Link>
         <nav className="hidden md:flex gap-8 font-medium text-sm">
-          <a
-            href="#"
-            className="text-slate-600 hover:text-teal-600 transition-colors"
+          <Link
+            href="/products?category=pens"
+            className="text-slate-600 hover:text-teal-600 transition-colors flex items-center"
           >
+            <PenTool className="h-4 w-4 mr-2" />
             Pens
-          </a>
-          <a
-            href="#"
-            className="text-slate-600 hover:text-teal-600 transition-colors"
+          </Link>
+          <Link
+            href="/products?category=notebooks"
+            className="text-slate-600 hover:text-teal-600 transition-colors flex items-center"
           >
+            <Book className="h-4 w-4 mr-2" />
             Notebooks
-          </a>
-          <a
-            href="#"
-            className="text-slate-600 hover:text-teal-600 transition-colors"
+          </Link>
+          <Link
+            href="/products?category=art-supplies"
+            className="text-slate-600 hover:text-teal-600 transition-colors flex items-center"
           >
-            Art Supplies
-          </a>
-          <a
-            href="#"
-            className="text-slate-600 hover:text-teal-600 transition-colors"
+            <Palette className="h-4 w-4 mr-2" />
+            Art & Craft
+          </Link>
+          <Link
+            href="/products?category=accessories"
+            className="text-slate-600 hover:text-teal-600 transition-colors flex items-center"
           >
+            <Boxes className="h-4 w-4 mr-2" />
             Accessories
-          </a>
+          </Link>
         </nav>
         <div className="flex items-center gap-3">
           {status === "authenticated" ? (

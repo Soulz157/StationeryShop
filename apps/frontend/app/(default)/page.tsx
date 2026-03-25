@@ -2,6 +2,7 @@ import { ArrowRight, Book, Palette, PenTool, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -22,12 +23,14 @@ export default function Home() {
                 notebooks, and artisan supplies designed for the modern creator.
               </p>
               <div className="mt-10 flex items-center justify-center gap-x-4">
-                <Button
-                  size="lg"
-                  className="rounded-full h-12 px-8 text-base bg-indigo-600 hover:bg-indigo-700 text-white"
-                >
-                  Shop Now
-                </Button>
+                <Link href="/products">
+                  <Button
+                    size="lg"
+                    className="rounded-full h-12 px-8 text-base bg-indigo-600 hover:bg-indigo-700 text-white"
+                  >
+                    Shop Now
+                  </Button>
+                </Link>
                 <Button
                   variant="outline"
                   size="lg"
@@ -196,8 +199,8 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Newsletter Section - 10% Indigo accent background */}
-        <section className="py-24 container mx-auto px-6">
+        {/* Newsletter Section*/}
+        {/* <section className="py-24 container mx-auto px-6">
           <div className="max-w-3xl mx-auto bg-gradient-to-br from-indigo-600 to-indigo-800 text-white rounded-3xl p-12 text-center md:p-16 relative overflow-hidden">
             <div className="absolute top-0 right-0 -mt-8 -mr-8 text-white/10">
               <Mail className="h-64 w-64 -rotate-12" />
@@ -223,7 +226,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-        </section>
+        </section> */}
       </main>
 
       {/* Footer */}

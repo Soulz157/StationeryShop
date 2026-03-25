@@ -156,8 +156,8 @@ export default function AccountPage() {
                 {!isEditing ? (
                   <Button
                     onClick={() => handleEditClick()}
-                    variant="outline"
-                    className="border-teal-300 text-teal-700 hover:bg-teal-50"
+                    variant="default"
+                    className="border-teal-300 text-white bg-teal-600 hover:bg-teal-700"
                   >
                     Edit Profile
                   </Button>

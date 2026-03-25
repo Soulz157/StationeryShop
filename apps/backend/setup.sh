@@ -24,7 +24,7 @@ pnpm nest g s $BASE_PATH/admin/$MODULE_NAME-admin --flat
 
 # 5. สร้าง Entities และ DTOs (ใช้ nest g class)
 # --no-spec คือไม่เอาไฟล์ test สำหรับ DTO/Entity ถ้าต้องการให้ลบ flag นี้ออกครับ
-pnpm nest g cl $BASE_PATH/entities/$MODULE_NAME.entity --no-spec --flat
+# pnpm nest g cl $BASE_PATH/entities/$MODULE_NAME.entity --no-spec --flat
 pnpm nest g cl $BASE_PATH/public/dto/$MODULE_NAME.public.dto --no-spec --flat
 pnpm nest g cl $BASE_PATH/authorized/dto/$MODULE_NAME.authorized.dto --no-spec --flat
 pnpm nest g cl $BASE_PATH/admin/dto/$MODULE_NAME.admin.dto --no-spec --flat 

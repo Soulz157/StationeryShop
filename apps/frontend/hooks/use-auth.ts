@@ -33,7 +33,7 @@ export const useAuth = () => {
         });
       } else {
         toast.success("เข้าสู่ระบบสำเร็จ");
-        router.push("/");
+        router.push("/products");
         router.refresh();
       }
     } catch (error) {

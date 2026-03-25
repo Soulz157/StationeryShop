@@ -71,11 +71,15 @@ model Category {
 }
 
 model Product {
-    id          String  @id @default(uuid())
+    id          String   @id @default(uuid())
     name        String
+    imgUrl      String   @map("img_url")
     description String?
     price       Float
-    stock       Int     @default(0)
+    stock       Int      @default(0)
+    tags        String[]
+    brand       String
+    rating      Float    @default(0)
 
     categoryId String
     category   Category    @relation(fields: [categoryId], references: [id])
