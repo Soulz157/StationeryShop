@@ -24,7 +24,6 @@ export class AuthPublicController {
     description: "Register failed",
   })
   async registerController(@Body() users: RegisterRequestDto) {
-    console.log(users);
     return this.authPublicService.registerService(users);
   }
 

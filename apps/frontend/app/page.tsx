@@ -1,15 +1,4 @@
-"use client";
-
-import {
-  ArrowRight,
-  Book,
-  Palette,
-  PenTool,
-  ShoppingCart,
-  Mail,
-  User,
-} from "lucide-react";
-import Link from "next/link";
+import { ArrowRight, Book, Palette, PenTool, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -17,65 +6,7 @@ import { Input } from "@/components/ui/input";
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-slate-50 font-sans text-slate-900">
-      {/* Navbar */}
-      <header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/80 backdrop-blur-md">
-        <div className="container mx-auto flex h-16 items-center justify-between px-6">
-          <Link
-            href="/"
-            className="text-2xl font-bold tracking-tight text-slate-800"
-          >
-            Stationery Store.
-          </Link>
-          <nav className="hidden md:flex gap-8 font-medium text-sm">
-            <a
-              href="#"
-              className="text-slate-600 hover:text-teal-600 transition-colors"
-            >
-              Pens
-            </a>
-            <a
-              href="#"
-              className="text-slate-600 hover:text-teal-600 transition-colors"
-            >
-              Notebooks
-            </a>
-            <a
-              href="#"
-              className="text-slate-600 hover:text-teal-600 transition-colors"
-            >
-              Art Supplies
-            </a>
-            <a
-              href="#"
-              className="text-slate-600 hover:text-teal-600 transition-colors"
-            >
-              Accessories
-            </a>
-          </nav>
-          <div className="flex items-center gap-3">
-            <Link href="/login">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-slate-600 hover:text-teal-600 hover:bg-teal-50"
-              >
-                <User className="h-4 w-4 mr-2" />
-                Login
-              </Button>
-            </Link>
-            <Button
-              variant="outline"
-              size="icon"
-              className="rounded-full border-slate-300 hover:border-teal-400 hover:bg-teal-50"
-            >
-              <ShoppingCart className="h-4 w-4 text-slate-600" />
-            </Button>
-          </div>
-        </div>
-      </header>
-
       <main className="flex-1 w-full">
-        {/* Hero Section - 60% Slate background */}
         <section className="relative overflow-hidden bg-gradient-to-b from-slate-100 to-slate-50 py-24 sm:py-32">
           <div className="absolute inset-0 -z-10 opacity-30">
             <div className="absolute top-20 left-10 w-72 h-72 bg-teal-200 rounded-full blur-3xl" />
@@ -91,14 +22,12 @@ export default function Home() {
                 notebooks, and artisan supplies designed for the modern creator.
               </p>
               <div className="mt-10 flex items-center justify-center gap-x-4">
-                {/* 10% Indigo - Primary CTA */}
                 <Button
                   size="lg"
                   className="rounded-full h-12 px-8 text-base bg-indigo-600 hover:bg-indigo-700 text-white"
                 >
                   Shop Now
                 </Button>
-                {/* 30% Teal - Secondary CTA */}
                 <Button
                   variant="outline"
                   size="lg"
@@ -112,7 +41,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Featured Categories - 30% Teal accents */}
+        {/* Featured Categories*/}
         <section className="py-24 container mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold tracking-tight text-slate-800">

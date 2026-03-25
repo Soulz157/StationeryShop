@@ -79,7 +79,7 @@ export class AuthPublicService {
       });
     }
 
-    const accessToken = this.jwtService.sign<UserPayload.Request>(
+    const accessToken = this.jwtService.sign<Auth.UserPayload>(
       {
         id: user.id,
         email: user.email,

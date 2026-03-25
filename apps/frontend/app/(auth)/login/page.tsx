@@ -1,15 +1,33 @@
 "use client";
 
 import Link from "next/link";
-import { PenTool } from "lucide-react";
+import { Form, FormLabel, FormField, FormMessage } from "@/components/ui/form";
+import { PenTool, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
+import { useAuth, loginSchema, type LoginFormValues } from "@/hooks/use-auth";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 export default function LoginPage() {
+  const { login, isLoading } = useAuth();
+
+  const form = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  async function onSubmit(values: LoginFormValues) {
+    await login(values);
+  }
+
   return (
     <div className="flex min-h-screen bg-slate-50 font-sans text-slate-900">
-      {/* Left side - 30% Teal accent panel */}
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-teal-500 to-teal-700 relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.08%22%3E%3Cpath%20d%3D%22M36%2034v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6%2034v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6%204V0H4v4H0v2h4v4h2V6h4V4H6z%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E')] opacity-50" />
         <div className="relative z-10 flex flex-col justify-center px-12 text-white">
@@ -23,7 +41,6 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* Right side - 60% Slate background */}
       <div className="flex-1 flex items-center justify-center px-6 py-12">
         <Card className="w-full max-w-md border-slate-200 shadow-lg">
           <CardHeader className="text-center pb-0">
@@ -45,52 +62,69 @@ export default function LoginPage() {
             </p>
           </CardHeader>
           <CardContent className="pt-6">
-            <form className="space-y-4">
-              <div className="space-y-2">
-                <label
-                  htmlFor="email"
-                  className="text-sm font-medium text-slate-700"
-                >
-                  Email
-                </label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="you@example.com"
-                  className="h-12 border-slate-300 focus-visible:ring-teal-400"
-                />
-              </div>
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <label
-                    htmlFor="password"
-                    className="text-sm font-medium text-slate-700"
-                  >
-                    Password
-                  </label>
-                  <Link
-                    href="#"
-                    className="text-sm text-teal-600 hover:text-teal-700"
-                  >
-                    Forgot password?
-                  </Link>
-                </div>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="••••••••"
-                  className="h-12 border-slate-300 focus-visible:ring-teal-400"
-                />
-              </div>
-
-              {/* 10% Indigo - Primary CTA */}
-              <Button
-                type="submit"
-                className="w-full h-12 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg"
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-4"
               >
-                Sign In
-              </Button>
-            </form>
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <div className="space-y-2">
+                      <FormLabel>Email</FormLabel>
+                      <Input
+                        {...field}
+                        type="email"
+                        placeholder="you@example.com"
+                        className="h-12 border-slate-300 focus-visible:ring-teal-400"
+                      />
+                      <FormMessage />
+                    </div>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <FormLabel>Password</FormLabel>
+                        <Link
+                          href="#"
+                          className="text-sm text-teal-600 hover:text-teal-700"
+                        >
+                          Forgot password?
+                        </Link>
+                      </div>
+                      <Input
+                        {...field}
+                        type="password"
+                        placeholder="••••••••"
+                        className="h-12 border-slate-300 focus-visible:ring-teal-400"
+                      />
+                      <FormMessage />
+                    </div>
+                  )}
+                />
+
+                <Button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full h-12"
+                >
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Signing
+                      In...
+                    </>
+                  ) : (
+                    "Sign In"
+                  )}
+                </Button>
+              </form>
+            </Form>
 
             <div className="relative my-6">
               <div className="absolute inset-0 flex items-center">
@@ -103,7 +137,6 @@ export default function LoginPage() {
               </div>
             </div>
 
-            {/* Social login - 30% Teal secondary */}
             <Button
               variant="outline"
               className="w-full h-12 border-slate-300 text-slate-700 hover:bg-teal-50 hover:border-teal-300"

@@ -7,7 +7,7 @@ import { AppException } from "@penshop/common";
 export class AuthAuthorizedService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getMeService(users: UserPayload.Request) {
+  async getMeService(users: Auth.UserPayload) {
     const { id } = users;
     const user = await this.prisma.user.findUnique({
       where: {
@@ -17,7 +17,11 @@ export class AuthAuthorizedService {
         firstName: true,
         lastName: true,
         email: true,
+        address: true,
+        phone: true,
         role: true,
+        createdAt: true,
+        updatedAt: true,
       },
     });
 
@@ -36,6 +40,10 @@ export class AuthAuthorizedService {
         lastName: user.lastName ?? "",
         email: user.email,
         role: user.role,
+        address: user.address ?? "",
+        phone: user.phone ?? "",
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
       },
     };
   }
@@ -70,7 +78,7 @@ export class AuthAuthorizedService {
     };
   }
 
-  async logoutService(users: UserPayload.Request) {
+  async logoutService(users: Auth.UserPayload) {
     await this.prisma.userToken.create({
       data: {
         userId: users.id,

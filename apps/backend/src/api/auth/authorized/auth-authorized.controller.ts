@@ -40,11 +40,11 @@ export class AuthAuthorizedController {
     description: "User not found",
   })
   @ApiOkResponse({ type: GetMeResponseDto, description: "User found" })
-  async getMeController(@Users() users: UserPayload.Request) {
+  async getMeController(@Users() users: Auth.UserPayload) {
     return this.authAuthorizedService.getMeService(users);
   }
 
-  @Patch("edit")
+  @Patch("me")
   @ApiOperation({ summary: "Edit user" })
   @ApiBadRequestResponse({
     type: ResponseFailedDto,
@@ -55,7 +55,7 @@ export class AuthAuthorizedController {
     description: "Edit user successfully",
   })
   async editController(
-    @Users() users: UserPayload.Request,
+    @Users() users: Auth.UserPayload,
     @Body() args: EditRequestDto,
   ) {
     return this.authAuthorizedService.editService(users.id, args);
@@ -71,7 +71,7 @@ export class AuthAuthorizedController {
     type: LogoutResponseDto,
     description: "Logout successfully",
   })
-  async logoutController(@Users() users: UserPayload.Request) {
+  async logoutController(@Users() users: Auth.UserPayload) {
     return this.authAuthorizedService.logoutService(users);
   }
 
@@ -86,7 +86,7 @@ export class AuthAuthorizedController {
     type: LogoutResponseDto,
     description: "Delete user successfully",
   })
-  async deleteMeController(@Users() user: UserPayload.Request) {
+  async deleteMeController(@Users() user: Auth.UserPayload) {
     return this.authAuthorizedService.deleteMeService(user.id);
   }
 }

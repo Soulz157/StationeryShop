@@ -2,13 +2,15 @@ import { z } from "zod";
 import { createZodDto } from "nestjs-zod";
 import { createStandardResponseSchema } from "src/libs/dto";
 
-export const LoginRequestSchema = z.object({
-  email: z
-    .string()
-    .email("รูปแบบอีเมลไม่ถูกต้อง")
-    .min(1, "อีเมลต้องไม่ว่างเปล่า"),
-  password: z.string().min(8, "รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร"),
-});
+export const LoginRequestSchema = z
+  .object({
+    email: z
+      .string()
+      .email("รูปแบบอีเมลไม่ถูกต้อง")
+      .min(1, "อีเมลต้องไม่ว่างเปล่า"),
+    password: z.string().min(8, "รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร"),
+  })
+  .strict();
 
 export const LoginResponseSchema = createStandardResponseSchema(
   z.object({
@@ -29,6 +31,7 @@ export const RegisterRequestSchema = z
     lastName: z.string().min(1, "นามสกุลต้องไม่ว่างเปล่า"),
     role: z.enum(["USER", "ADMIN"]).default("USER"),
   })
+  .strict()
   .refine((data) => data.password === data.confirmpassword, {
     message: "รหัสผ่านไม่ตรงกัน",
     path: ["confirmpassword"],

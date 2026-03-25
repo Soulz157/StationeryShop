@@ -1,6 +1,6 @@
 declare global {
-  namespace UserPayload {
-    interface Request {
+  namespace Auth {
+    interface UserPayload {
       id: string;
       email: string;
       firstName: string;
