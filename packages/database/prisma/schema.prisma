@@ -80,14 +80,16 @@ model Product {
     tags        String[]
     brand       String
     rating      Float    @default(0)
+    isActive    Boolean  @default(true) @map("is_active")
 
     categoryId String
     category   Category    @relation(fields: [categoryId], references: [id])
     cartItems  CartItem[]
     orderItems OrderItem[]
 
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    deletedAt DateTime?
 
     @@map("products")
 }

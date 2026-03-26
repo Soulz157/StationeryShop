@@ -7,7 +7,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
-import { useAuth, loginSchema, type LoginFormValues } from "@/hooks/use-auth";
+import {
+  useAuth,
+  loginSchema,
+  type LoginFormValues,
+} from "@/hooks/auth/use-auth";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 

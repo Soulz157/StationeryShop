@@ -1,22 +1,9 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import {
-  Search,
-  SlidersHorizontal,
-  X,
-  ShoppingCart,
-  User,
-  ChevronDown,
-  Grid3X3,
-  LayoutList,
-} from "lucide-react";
-import Link from "next/link";
+import { SlidersHorizontal, X, Grid3X3, LayoutList } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
 import {
   Select,
   SelectContent,
@@ -31,20 +18,12 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Badge } from "@/components/ui/badge";
 
-type Category = "all" | "pens" | "notebooks" | "art-supplies" | "accessories";
-
-interface Product {
-  id: number;
-  name: string;
-  category: Category;
-  price: number;
-  brand: string;
-  inStock: boolean;
-  description: string;
-  tags: string[];
-}
+import ProductCard, {
+  Product,
+  Category,
+} from "@/app/(default)/products/components/product-card";
+import FilterSidebar from "@/app/(default)/products/components/filter-sidebar";
 
 const products: Product[] = [
   {
@@ -312,63 +291,57 @@ export default function ProductsPage() {
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [selectedPriceRanges, setSelectedPriceRanges] = useState<number[]>([]);
   const [inStockOnly, setInStockOnly] = useState(false);
-  const [sortBy, setSortBy] = useState("featured");
+  const [sortBy, setSortBy] = useState<
+    "featured" | "price-low" | "price-high" | "name"
+  >("featured");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
   const filteredProducts = useMemo(() => {
-    let result = products;
+    const filtered = products.filter((product) => {
+      if (selectedCategory !== "all" && product.category !== selectedCategory) {
+        return false;
+      }
 
-    // Category filter
-    if (selectedCategory !== "all") {
-      result = result.filter((p) => p.category === selectedCategory);
-    }
+      if (
+        searchQuery.trim() &&
+        !product.name.toLowerCase().includes(searchQuery.trim().toLowerCase())
+      ) {
+        return false;
+      }
 
-    // Search filter
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
-      result = result.filter(
-        (p) =>
-          p.name.toLowerCase().includes(query) ||
-          p.description.toLowerCase().includes(query) ||
-          p.brand.toLowerCase().includes(query) ||
-          p.tags.some((t) => t.includes(query)),
-      );
-    }
+      if (
+        selectedBrands.length > 0 &&
+        !selectedBrands.includes(product.brand)
+      ) {
+        return false;
+      }
 
-    // Brand filter
-    if (selectedBrands.length > 0) {
-      result = result.filter((p) => selectedBrands.includes(p.brand));
-    }
-
-    // Price range filter
-    if (selectedPriceRanges.length > 0) {
-      result = result.filter((p) =>
-        selectedPriceRanges.some((index) => {
+      if (selectedPriceRanges.length > 0) {
+        const matchesRange = selectedPriceRanges.some((index) => {
           const range = priceRanges[index];
-          return p.price >= range.min && p.price < range.max;
-        }),
-      );
-    }
+          return product.price >= range.min && product.price <= range.max;
+        });
+        if (!matchesRange) return false;
+      }
 
-    // In stock filter
-    if (inStockOnly) {
-      result = result.filter((p) => p.inStock);
-    }
+      if (inStockOnly && !product.inStock) {
+        return false;
+      }
 
-    // Sort
+      return true;
+    });
+
     switch (sortBy) {
       case "price-low":
-        result = [...result].sort((a, b) => a.price - b.price);
-        break;
+        return filtered.sort((a, b) => a.price - b.price);
       case "price-high":
-        result = [...result].sort((a, b) => b.price - a.price);
-        break;
+        return filtered.sort((a, b) => b.price - a.price);
       case "name":
-        result = [...result].sort((a, b) => a.name.localeCompare(b.name));
-        break;
+        return filtered.sort((a, b) => a.name.localeCompare(b.name));
+      case "featured":
+      default:
+        return filtered;
     }
-
-    return result;
   }, [
     selectedCategory,
     searchQuery,
@@ -403,112 +376,9 @@ export default function ProductsPage() {
     (inStockOnly ? 1 : 0) +
     (searchQuery ? 1 : 0);
 
-  const FilterSidebar = () => (
-    <div className="space-y-6">
-      {/* Search */}
-      <div>
-        <Label className="text-sm font-medium text-slate-700 mb-2 block">
-          Search
-        </Label>
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-          <Input
-            placeholder="Search products..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 border-slate-200 focus-visible:ring-teal-500"
-          />
-        </div>
-      </div>
-
-      {/* Brands */}
-      <div>
-        <Label className="text-sm font-medium text-slate-700 mb-3 block">
-          Brands
-        </Label>
-        <div className="space-y-2">
-          {brands.map((brand) => (
-            <div key={brand} className="flex items-center gap-2">
-              <Checkbox
-                id={`brand-${brand}`}
-                checked={selectedBrands.includes(brand)}
-                onCheckedChange={() => toggleBrand(brand)}
-                className="border-slate-300 data-[state=checked]:bg-teal-600 data-[state=checked]:border-teal-600"
-              />
-              <Label
-                htmlFor={`brand-${brand}`}
-                className="text-sm text-slate-600 cursor-pointer"
-              >
-                {brand}
-              </Label>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Price Range */}
-      <div>
-        <Label className="text-sm font-medium text-slate-700 mb-3 block">
-          Price Range
-        </Label>
-        <div className="space-y-2">
-          {priceRanges.map((range, index) => (
-            <div key={range.label} className="flex items-center gap-2">
-              <Checkbox
-                id={`price-${index}`}
-                checked={selectedPriceRanges.includes(index)}
-                onCheckedChange={() => togglePriceRange(index)}
-                className="border-slate-300 data-[state=checked]:bg-teal-600 data-[state=checked]:border-teal-600"
-              />
-              <Label
-                htmlFor={`price-${index}`}
-                className="text-sm text-slate-600 cursor-pointer"
-              >
-                {range.label}
-              </Label>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Availability */}
-      <div>
-        <Label className="text-sm font-medium text-slate-700 mb-3 block">
-          Availability
-        </Label>
-        <div className="flex items-center gap-2">
-          <Checkbox
-            id="in-stock"
-            checked={inStockOnly}
-            onCheckedChange={(checked) => setInStockOnly(checked as boolean)}
-            className="border-slate-300 data-[state=checked]:bg-teal-600 data-[state=checked]:border-teal-600"
-          />
-          <Label
-            htmlFor="in-stock"
-            className="text-sm text-slate-600 cursor-pointer"
-          >
-            In Stock Only
-          </Label>
-        </div>
-      </div>
-
-      {/* Clear Filters */}
-      {activeFiltersCount > 0 && (
-        <Button
-          variant="outline"
-          onClick={clearFilters}
-          className="w-full border-slate-300 text-slate-600 hover:bg-slate-100"
-        >
-          Clear All Filters
-        </Button>
-      )}
-    </div>
-  );
-
   return (
     <div className="flex flex-col min-h-screen bg-slate-50 font-sans text-slate-900">
       <main className="flex-1 w-full">
-        {/* Page Header */}
         <section className="bg-gradient-to-b from-slate-100 to-slate-50 py-12">
           <div className="container mx-auto px-6">
             <h1 className="text-4xl font-bold tracking-tight text-slate-800 text-balance">
@@ -539,49 +409,55 @@ export default function ProductsPage() {
           </div>
         </section>
 
-        {/* Products Section */}
         <section className="py-8">
           <div className="container mx-auto px-6">
             <div className="flex gap-8">
-              {/* Desktop Sidebar */}
               <aside className="hidden lg:block w-64 shrink-0">
                 <div className="sticky top-24 bg-white rounded-xl border border-slate-200 p-6">
                   <h2 className="font-semibold text-slate-800 mb-4">Filters</h2>
-                  <FilterSidebar />
+                  <FilterSidebar
+                    searchQuery={searchQuery}
+                    setSearchQuery={setSearchQuery}
+                    brands={brands}
+                    selectedBrands={selectedBrands}
+                    toggleBrand={toggleBrand}
+                    priceRanges={priceRanges}
+                    selectedPriceRanges={selectedPriceRanges}
+                    togglePriceRange={togglePriceRange}
+                    inStockOnly={inStockOnly}
+                    setInStockOnly={setInStockOnly}
+                    clearFilters={clearFilters}
+                    activeFiltersCount={activeFiltersCount}
+                  />
                 </div>
               </aside>
 
-              {/* Products Grid */}
               <div className="flex-1">
-                {/* Toolbar */}
                 <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
                   <div className="flex items-center gap-3">
-                    {/* Mobile Filter Button */}
                     <Sheet>
-                      <SheetTrigger asChild>
-                        <Button
-                          variant="outline"
-                          className="lg:hidden border-slate-200 text-slate-600"
-                        >
-                          <SlidersHorizontal className="h-4 w-4 mr-2" />
-                          Filters
-                          {activeFiltersCount > 0 && (
-                            <Badge className="ml-2 bg-teal-600">
-                              {activeFiltersCount}
-                            </Badge>
-                          )}
-                        </Button>
-                      </SheetTrigger>
                       <SheetContent side="left" className="w-80">
                         <SheetHeader>
                           <SheetTitle>Filters</SheetTitle>
                         </SheetHeader>
                         <div className="mt-6">
-                          <FilterSidebar />
+                          <FilterSidebar
+                            searchQuery={searchQuery}
+                            setSearchQuery={setSearchQuery}
+                            brands={brands}
+                            selectedBrands={selectedBrands}
+                            toggleBrand={toggleBrand}
+                            priceRanges={priceRanges}
+                            selectedPriceRanges={selectedPriceRanges}
+                            togglePriceRange={togglePriceRange}
+                            inStockOnly={inStockOnly}
+                            setInStockOnly={setInStockOnly}
+                            clearFilters={clearFilters}
+                            activeFiltersCount={activeFiltersCount}
+                          />
                         </div>
                       </SheetContent>
                     </Sheet>
-
                     <p className="text-sm text-slate-500">
                       {filteredProducts.length} products
                     </p>
@@ -589,7 +465,18 @@ export default function ProductsPage() {
 
                   <div className="flex items-center gap-3">
                     {/* Sort */}
-                    <Select value={sortBy} onValueChange={setSortBy}>
+                    <Select
+                      value={sortBy}
+                      onValueChange={(value) => {
+                        setSortBy(
+                          value as
+                            | "featured"
+                            | "price-low"
+                            | "price-high"
+                            | "name",
+                        );
+                      }}
+                    >
                       <SelectTrigger className="w-[160px] border-slate-200">
                         <SelectValue placeholder="Sort by" />
                       </SelectTrigger>
@@ -631,61 +518,7 @@ export default function ProductsPage() {
                   </div>
                 </div>
 
-                {/* Active Filters */}
-                {activeFiltersCount > 0 && (
-                  <div className="flex flex-wrap items-center gap-2 mb-6">
-                    {searchQuery && (
-                      <Badge
-                        variant="secondary"
-                        className="bg-teal-100 text-teal-700 hover:bg-teal-200 cursor-pointer"
-                        onClick={() => setSearchQuery("")}
-                      >
-                        Search: {searchQuery}
-                        <X className="h-3 w-3 ml-1" />
-                      </Badge>
-                    )}
-                    {selectedBrands.map((brand) => (
-                      <Badge
-                        key={brand}
-                        variant="secondary"
-                        className="bg-teal-100 text-teal-700 hover:bg-teal-200 cursor-pointer"
-                        onClick={() => toggleBrand(brand)}
-                      >
-                        {brand}
-                        <X className="h-3 w-3 ml-1" />
-                      </Badge>
-                    ))}
-                    {selectedPriceRanges.map((index) => (
-                      <Badge
-                        key={index}
-                        variant="secondary"
-                        className="bg-teal-100 text-teal-700 hover:bg-teal-200 cursor-pointer"
-                        onClick={() => togglePriceRange(index)}
-                      >
-                        {priceRanges[index].label}
-                        <X className="h-3 w-3 ml-1" />
-                      </Badge>
-                    ))}
-                    {inStockOnly && (
-                      <Badge
-                        variant="secondary"
-                        className="bg-teal-100 text-teal-700 hover:bg-teal-200 cursor-pointer"
-                        onClick={() => setInStockOnly(false)}
-                      >
-                        In Stock
-                        <X className="h-3 w-3 ml-1" />
-                      </Badge>
-                    )}
-                    <button
-                      onClick={clearFilters}
-                      className="text-sm text-slate-500 hover:text-slate-700 underline"
-                    >
-                      Clear all
-                    </button>
-                  </div>
-                )}
-
-                {/* Products */}
+                {/* Products Area */}
                 {filteredProducts.length === 0 ? (
                   <div className="text-center py-16">
                     <p className="text-slate-500 text-lg">No products found.</p>
@@ -697,90 +530,20 @@ export default function ProductsPage() {
                       Clear Filters
                     </Button>
                   </div>
-                ) : viewMode === "grid" ? (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-                    {filteredProducts.map((product) => (
-                      <Card
-                        key={product.id}
-                        className="group overflow-hidden border-slate-200 hover:border-teal-300 transition-all hover:shadow-lg"
-                      >
-                        <div className="aspect-square bg-gradient-to-br from-slate-100 to-slate-50 flex items-center justify-center relative">
-                          {!product.inStock && (
-                            <Badge className="absolute top-3 right-3 bg-slate-500">
-                              Out of Stock
-                            </Badge>
-                          )}
-                          <div className="w-24 h-24 rounded-lg bg-gradient-to-br from-teal-100 to-cyan-100 group-hover:scale-110 transition-transform duration-300" />
-                        </div>
-                        <CardContent className="p-4">
-                          <p className="text-xs text-teal-600 font-medium mb-1">
-                            {product.brand}
-                          </p>
-                          <h3 className="font-semibold text-slate-800">
-                            {product.name}
-                          </h3>
-                          <p className="text-sm text-slate-500 mt-1">
-                            {product.description}
-                          </p>
-                          <div className="flex items-center justify-between mt-4">
-                            <span className="text-lg font-bold text-slate-800">
-                              ${product.price.toFixed(2)}
-                            </span>
-                            <Button
-                              size="sm"
-                              disabled={!product.inStock}
-                              className="bg-indigo-600 hover:bg-indigo-700 text-white disabled:bg-slate-300"
-                            >
-                              Add to Cart
-                            </Button>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
                 ) : (
-                  <div className="space-y-4">
-                    {filteredProducts.map((product) => (
-                      <Card
+                  <div
+                    className={
+                      viewMode === "grid"
+                        ? "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6"
+                        : "space-y-4"
+                    }
+                  >
+                    {filteredProducts.map((product: Product) => (
+                      <ProductCard
                         key={product.id}
-                        className="group overflow-hidden border-slate-200 hover:border-teal-300 transition-all hover:shadow-lg"
-                      >
-                        <div className="flex">
-                          <div className="w-32 h-32 sm:w-40 sm:h-40 bg-gradient-to-br from-slate-100 to-slate-50 flex items-center justify-center shrink-0 relative">
-                            {!product.inStock && (
-                              <Badge className="absolute top-2 left-2 bg-slate-500 text-xs">
-                                Out of Stock
-                              </Badge>
-                            )}
-                            <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-teal-100 to-cyan-100" />
-                          </div>
-                          <CardContent className="flex-1 p-4 flex flex-col justify-between">
-                            <div>
-                              <p className="text-xs text-teal-600 font-medium mb-1">
-                                {product.brand}
-                              </p>
-                              <h3 className="font-semibold text-slate-800">
-                                {product.name}
-                              </h3>
-                              <p className="text-sm text-slate-500 mt-1">
-                                {product.description}
-                              </p>
-                            </div>
-                            <div className="flex items-center justify-between mt-4">
-                              <span className="text-lg font-bold text-slate-800">
-                                ${product.price.toFixed(2)}
-                              </span>
-                              <Button
-                                size="sm"
-                                disabled={!product.inStock}
-                                className="bg-indigo-600 hover:bg-indigo-700 text-white disabled:bg-slate-300"
-                              >
-                                Add to Cart
-                              </Button>
-                            </div>
-                          </CardContent>
-                        </div>
-                      </Card>
+                        product={product}
+                        viewMode={viewMode}
+                      />
                     ))}
                   </div>
                 )}
@@ -789,19 +552,6 @@ export default function ProductsPage() {
           </div>
         </section>
       </main>
-
-      {/* Footer */}
-      <footer className="w-full py-12 border-t border-slate-200 bg-white">
-        <div className="container mx-auto px-6 flex flex-col items-center">
-          <div className="text-2xl font-bold tracking-tight mb-4 text-slate-800">
-            Stationery Store.
-          </div>
-          <p className="text-slate-500 text-sm text-center">
-            &copy; {new Date().getFullYear()} Stationery Store Inc. All rights
-            reserved.
-          </p>
-        </div>
-      </footer>
     </div>
   );
 }

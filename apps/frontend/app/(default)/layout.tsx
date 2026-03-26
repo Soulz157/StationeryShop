@@ -1,5 +1,5 @@
 "use client";
-import { Navbar } from "@/components/layouts";
+import { Navbar, Footer } from "@/components/layouts";
 
 export default function Layout({
   children,
@@ -10,6 +10,7 @@ export default function Layout({
     <>
       <Navbar />
       <div className="min-h-[70vh]">{children}</div>
+      <Footer />
     </>
   );
 }

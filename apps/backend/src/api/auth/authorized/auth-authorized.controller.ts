@@ -27,7 +27,7 @@ import {
 import { ResponseFailedDto } from "src/libs/dto";
 
 @UseGuards(AuthGuard)
-@Controller("auth/authorized")
+@Controller("authorized/auth")
 @ApiTags("Auth Authorized")
 @ApiBearerAuth()
 export class AuthAuthorizedController {

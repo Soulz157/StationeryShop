@@ -6,7 +6,7 @@ import { AppException } from "@penshop/common";
 export class ProductsPublicService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getAllProducts() {
+  async getAllProductService() {
     const products = await this.prisma.product.findMany();
 
     if (!products) {

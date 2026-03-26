@@ -6,6 +6,7 @@ interface DecodedToken {
   id: string;
   email: string;
   role: string;
+  exp: number;
 }
 
 export const authOptions: NextAuthOptions = {
@@ -20,21 +21,23 @@ export const authOptions: NextAuthOptions = {
         if (!credentials?.email || !credentials?.password) return null;
 
         try {
-          const res = await fetch(
-            "http://localhost:4000/api/auth/public/login",
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                email: credentials.email,
-                password: credentials.password,
-              }),
-            },
-          );
+          const API_URL = process.env.NEXT_PUBLIC_API_URL;
+          const res = await fetch(`${API_URL}/api/public/auth/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: credentials.email,
+              password: credentials.password,
+            }),
+          });
 
           const user = await res.json();
 
-          if (res.ok && user.data?.accessToken) {
+          if (!res.ok) {
+            throw new Error(user.message || "อีเมลหรือรหัสผ่านไม่ถูกต้อง");
+          }
+
+          if (user.data?.accessToken) {
             const token = user.data.accessToken;
 
             const decoded: DecodedToken = jwtDecode(token);
@@ -48,8 +51,10 @@ export const authOptions: NextAuthOptions = {
           }
           return null;
         } catch (error) {
-          console.log(error);
-          return null;
+          if (error instanceof Error) {
+            throw new Error(error.message);
+          }
+          throw new Error("เกิดข้อผิดพลาดในการเชื่อมต่อ");
         }
       },
     }),
@@ -74,7 +79,7 @@ export const authOptions: NextAuthOptions = {
   },
   session: {
     strategy: "jwt",
-    maxAge: 7 * 24 * 60 * 60,
+    maxAge: 24 * 60 * 60,
   },
   pages: {
     signIn: "/login",

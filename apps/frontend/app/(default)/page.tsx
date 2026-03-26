@@ -1,7 +1,6 @@
-import { ArrowRight, Book, Palette, PenTool, Mail } from "lucide-react";
+import { ArrowRight, Book, Palette, PenTool } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import Link from "next/link";
 
 export default function Home() {
@@ -228,19 +227,6 @@ export default function Home() {
           </div>
         </section> */}
       </main>
-
-      {/* Footer */}
-      <footer className="w-full py-12 border-t border-slate-200 bg-white">
-        <div className="container mx-auto px-6 flex flex-col items-center">
-          <div className="text-2xl font-bold tracking-tight mb-4 text-slate-800">
-            Stationery Store.
-          </div>
-          <p className="text-slate-500 text-sm text-center">
-            &copy; {new Date().getFullYear()} Stationery Store Inc. All rights
-            reserved.
-          </p>
-        </div>
-      </footer>
     </div>
   );
 }

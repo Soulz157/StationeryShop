@@ -25,8 +25,6 @@ export const useAuth = () => {
         redirect: false,
       });
 
-      //   console.log("👉 2. NextAuth ตอบกลับมาว่า:", res);
-
       if (res?.error) {
         toast.error("เข้าสู่ระบบไม่สำเร็จ", {
           description: "อีเมลหรือรหัสผ่านไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง",

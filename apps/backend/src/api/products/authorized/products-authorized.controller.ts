@@ -1,4 +1,11 @@
-import { Controller } from '@nestjs/common';
+import { Controller } from "@nestjs/common";
+import { ApiTags } from "@nestjs/swagger";
+import { ProductsAuthorizedService } from "./products-authorized.service";
 
-@Controller('products-authorized')
-export class ProductsAuthorizedController {}
+@Controller("authorized/products")
+@ApiTags("products-authorized")
+export class ProductsAuthorizedController {
+  constructor(
+    private readonly productsAuthorizedService: ProductsAuthorizedService,
+  ) {}
+}

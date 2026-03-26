@@ -1,31 +1,21 @@
 "use client";
-import { useSession } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
 import { UserProfile } from "@/types";
+import { profileService } from "@/services/profile.service";
+import { useSession } from "next-auth/react";
 
 export function useProfile() {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const fetchProfile = useCallback(async () => {
-    if (!session?.user?.accessToken) {
-      setLoading(false);
-      return;
-    }
-
     setLoading(true);
     setError(null);
 
     try {
-      const res = await fetch("http://localhost:4000/api/auth/authorized/me", {
-        headers: { Authorization: `Bearer ${session.user.accessToken}` },
-      });
-
-      if (!res.ok) throw new Error("Failed to fetch profile");
-
-      const data = await res.json();
+      const data = await profileService.getProfile();
       setProfile(data.data);
     } catch (err) {
       if (err instanceof Error) {
@@ -36,10 +26,15 @@ export function useProfile() {
     } finally {
       setLoading(false);
     }
-  }, [session?.user?.accessToken]);
+  }, []);
 
   useEffect(() => {
-    if (status !== "loading") {
+    if (status === "loading") {
+      return;
+    } else if (status === "unauthenticated") {
+      setLoading(false);
+      setProfile(null);
+    } else {
       fetchProfile();
     }
   }, [fetchProfile, status]);

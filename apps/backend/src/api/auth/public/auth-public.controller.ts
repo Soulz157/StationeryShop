@@ -9,7 +9,7 @@ import {
 } from "./dto/auth.public.dto";
 import { ResponseFailedDto } from "src/libs/dto";
 
-@Controller("auth/public")
+@Controller("public/auth")
 @ApiTags("Auth Public")
 export class AuthPublicController {
   constructor(private readonly authPublicService: AuthPublicService) {}

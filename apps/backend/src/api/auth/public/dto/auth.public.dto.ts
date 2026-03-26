@@ -26,15 +26,15 @@ export const RegisterRequestSchema = z
       .email({ message: "รูปแบบอีเมลไม่ถูกต้อง" })
       .min(1, "อีเมลต้องไม่ว่างเปล่า"),
     password: z.string().min(8, "รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร"),
-    confirmpassword: z.string().min(8, "รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร"),
+    confirmPassword: z.string().min(8, "รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร"),
     firstName: z.string().min(1, "ชื่อต้องไม่ว่างเปล่า"),
     lastName: z.string().min(1, "นามสกุลต้องไม่ว่างเปล่า"),
     role: z.enum(["USER", "ADMIN"]).default("USER"),
   })
   .strict()
-  .refine((data) => data.password === data.confirmpassword, {
+  .refine((data) => data.password === data.confirmPassword, {
     message: "รหัสผ่านไม่ตรงกัน",
-    path: ["confirmpassword"],
+    path: ["confirmPassword"],
   });
 
 export const RegisterResponseSchema = createStandardResponseSchema(
