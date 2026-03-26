@@ -11,7 +11,7 @@ import { AppException } from "@penshop/common";
 export class ProductsAdminService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async createProductService(args: CreateProductsDto) {
+  async createProductService(user: Auth.UserPayload, args: CreateProductsDto) {
     const category = await this.prisma.category.findUnique({
       where: {
         name: args.category,
@@ -40,6 +40,8 @@ export class ProductsAdminService {
         },
         brand: args.brand ?? "",
         tags: [...(args.tags ?? [])],
+        createdBy: user.id,
+        updatedBy: user.id,
       },
     });
 
@@ -54,7 +56,7 @@ export class ProductsAdminService {
     return {
       statusCode: 201,
       message: "สร้างสินค้าสำเร็จ",
-      data: {},
+      data: product,
     };
   }
 
@@ -75,12 +77,75 @@ export class ProductsAdminService {
 
     return {
       statusCode: 201,
-      message: "สร้างหมวดหมู่สินค้าสำเร็จ",
-      data: {},
+      message: `สร้างหมวดหมู่สินค้า '${category.name}' สำเร็จ`, 
+        data: {},
     };
   }
 
-  async updateProductService(agrs: UpdateProductsDto) {}
+  async updateProductService(user: Auth.UserPayload, args: UpdateProductsDto) {
+    const existingProduct = await this.prisma.product.findUnique({
+      where: {
+        id: args.id,
+      },
+    });
+
+    if (!existingProduct) {
+      throw new AppException({
+        statusCode: 404,
+        message: "ไม่พบสินค้า",
+        type: "ERROR",
+      });
+    }
+
+    const category = await this.prisma.category.findUnique({
+      where: {
+        name: args.category,
+      },
+    });
+
+    if (!category) {
+      throw new AppException({
+        statusCode: 404,
+        message: "ไม่พบหมวดหมู่สินค้า",
+        type: "ERROR",
+      });
+    }
+
+    const product = await this.prisma.product.update({
+      where: {
+        id: args.id,
+      },
+      data: {
+        name: args.name,
+        description: args.description,
+        imgUrl: args.imgUrl ?? "",
+        price: args.price,
+        stock: args.stock,
+        category: {
+          connect: {
+            id: category.id,
+          },
+        },
+        brand: args.brand ?? "",
+        tags: [...(args.tags ?? [])],
+        updatedBy: user.id,
+      },
+    });
+
+    if (!product) {
+      throw new AppException({
+        statusCode: 400,
+        message: "เกิดข้อผิดพลาดในการอัปเดตสินค้า",
+        type: "ERROR",
+      });
+    }
+
+    return {
+      statusCode: 200,
+      message: "อัปเดตสินค้าสำเร็จ",
+      data: product,
+    };
+  }
 
   async deleteProductService(id: string) {
     const existingProduct = await this.prisma.product.findUnique({

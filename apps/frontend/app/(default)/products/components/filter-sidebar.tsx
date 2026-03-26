@@ -86,13 +86,13 @@ export default function FilterSidebar({
           {priceRanges.map((range, index) => (
             <div key={range.label} className="flex items-center gap-2">
               <Checkbox
-                id={`price-${index}`}
+                id={`price-฿{index}`}
                 checked={selectedPriceRanges.includes(index)}
                 onCheckedChange={() => togglePriceRange(index)}
                 className="border-slate-300 data-[state=checked]:bg-teal-600 data-[state=checked]:border-teal-600"
               />
               <Label
-                htmlFor={`price-${index}`}
+                htmlFor={`price-฿{index}`}
                 className="text-sm text-slate-600 cursor-pointer"
               >
                 {range.label}

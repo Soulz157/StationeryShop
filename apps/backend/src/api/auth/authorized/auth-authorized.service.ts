@@ -74,7 +74,7 @@ export class AuthAuthorizedService {
     return {
       statusCode: 200,
       message: "แก้ไขข้อมูลสำเร็จ",
-      data: user,
+      data: {},
     };
   }
 

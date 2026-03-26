@@ -24,10 +24,10 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import { useProfile } from "@/hooks/use-profile";
+import { useProfile } from "@/hooks/user/use-profile";
 import { useRouter } from "next/navigation";
 import { Loading } from "@/components/layouts";
-import { useUpdateProfile } from "@/hooks/use-update-profile";
+import { useUpdateProfile } from "@/hooks/user/use-update-profile";
 import { toast } from "sonner";
 import {
   Form,

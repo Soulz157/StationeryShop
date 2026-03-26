@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
-import { authService } from "@/services/auth.service";
-import { RegisterPayload } from "@/types";
 import { toast } from "sonner";
+import { authService } from "@/services/auth";
+import { RegisterPayload } from "@/types";
 
 export function useRegister() {
   const [isLoading, setIsLoading] = useState(false);
@@ -14,7 +14,7 @@ export function useRegister() {
     try {
       await authService.register(data);
 
-      toast.success("Account created successfully! Logging you in...");
+      toast.success("สมัครสมาชิกสำเร็จ กำลังเข้าสู่ระบบ!");
 
       const signInResult = await signIn("credentials", {
         redirect: false,

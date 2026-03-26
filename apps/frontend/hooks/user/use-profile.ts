@@ -1,7 +1,7 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
 import { UserProfile } from "@/types";
-import { profileService } from "@/services/profile.service";
+import { profileService } from "@/services/profile";
 import { useSession } from "next-auth/react";
 
 export function useProfile() {

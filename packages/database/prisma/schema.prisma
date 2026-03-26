@@ -87,6 +87,9 @@ model Product {
     cartItems  CartItem[]
     orderItems OrderItem[]
 
+    createdBy String
+    updatedBy String
+
     createdAt DateTime  @default(now())
     updatedAt DateTime  @updatedAt
     deletedAt DateTime?

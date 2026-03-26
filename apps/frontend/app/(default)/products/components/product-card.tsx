@@ -45,7 +45,7 @@ export default function ProductCard({ product, viewMode }: ProductCardProps) {
           <p className="text-sm text-slate-500 mt-1">{product.description}</p>
           <div className="flex items-center justify-between mt-4">
             <span className="text-lg font-bold text-slate-800">
-              ${product.price.toFixed(2)}
+              ฿{product.price.toFixed(2)}
             </span>
             <Button
               size="sm"

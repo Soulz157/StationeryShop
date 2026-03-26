@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { profileService } from "@/services/profile.service";
+import { profileService } from "@/services/profile";
 import { UpdateProfilePayload } from "@/types";
 
 export function useUpdateProfile() {
