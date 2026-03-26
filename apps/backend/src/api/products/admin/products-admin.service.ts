@@ -77,8 +77,8 @@ export class ProductsAdminService {
 
     return {
       statusCode: 201,
-      message: `สร้างหมวดหมู่สินค้า '${category.name}' สำเร็จ`, 
-        data: {},
+      message: `สร้างหมวดหมู่สินค้า '${category.name}' สำเร็จ`,
+      data: {},
     };
   }
 

@@ -27,6 +27,7 @@ Stationery-shop/
 ## 🛠️ Prerequisites
 
 Make sure you have the following installed:
+
 - [Node.js](https://nodejs.org/) (>= 20.0.0)
 - [pnpm](https://pnpm.io/) (>= 9.0.0)
 - Docker (for standing up your local database)
@@ -34,18 +35,22 @@ Make sure you have the following installed:
 ## 🏁 Getting Started
 
 1. **Clone the repository and install dependencies:**
+
    ```bash
    pnpm install
    ```
 
 2. **Set up Environment Variables:**
    Copy the example environment variables file and fill in your database credentials:
+
    ```bash
    cp .env.example .env
    ```
-   *(Ensure you have a database running on the URL defined in your `.env`)*
+
+   _(Ensure you have a database running on the URL defined in your `.env`)_
 
 3. **Generate Prisma Client and Run Migrations:**
+
    ```bash
    pnpm db:generate
    pnpm db:migrate:dev

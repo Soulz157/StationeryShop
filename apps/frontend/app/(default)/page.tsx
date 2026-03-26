@@ -5,7 +5,13 @@ import Link from "next/link";
 import FeatureCategory from "./components/feature-category";
 import BestSeller from "./components/best-seller";
 
-export default function Home() {
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/authOptions";
+
+export default async function Home() {
+  const session = await getServerSession(authOptions);
+
+  const isAuthenticated = !!session;
   return (
     <div className="flex flex-col min-h-screen bg-slate-50 font-sans text-slate-900">
       <main className="flex-1 w-full">
@@ -24,14 +30,25 @@ export default function Home() {
                 notebooks, and artisan supplies designed for the modern creator.
               </p>
               <div className="mt-10 flex items-center justify-center gap-x-4">
-                <Link href="/products">
-                  <Button
-                    size="lg"
-                    className="rounded-full cursor-pointer h-12 px-8 text-base bg-indigo-600 hover:bg-indigo-700 text-white"
-                  >
-                    Shop Now
-                  </Button>
-                </Link>
+                {isAuthenticated ? (
+                  <Link href="/products">
+                    <Button
+                      size="lg"
+                      className="rounded-full cursor-pointer h-12 px-8 text-base bg-indigo-600 hover:bg-indigo-700 text-white"
+                    >
+                      Shop Now
+                    </Button>
+                  </Link>
+                ) : (
+                  <Link href="/login">
+                    <Button
+                      size="lg"
+                      className="rounded-full cursor-pointer h-12 px-8 text-base bg-indigo-600 hover:bg-indigo-700 text-white"
+                    >
+                      Shop Now
+                    </Button>
+                  </Link>
+                )}
                 <Button
                   variant="outline"
                   size="lg"

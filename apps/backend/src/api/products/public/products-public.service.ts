@@ -8,12 +8,11 @@ export class ProductsPublicService {
 
   async getAllProductService() {
     const products = await this.prisma.product.findMany({
-        where:{
-            isActive: true,
-            deletedAt: null
-        }
-    }
-    );
+      where: {
+        isActive: true,
+        deletedAt: null,
+      },
+    });
 
     if (!products) {
       throw new AppException({

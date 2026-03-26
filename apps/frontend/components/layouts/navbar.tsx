@@ -12,9 +12,20 @@ import {
   Boxes,
 } from "lucide-react";
 import { useSession, signOut } from "next-auth/react";
+import { authService } from "@/services/auth";
 
 export default function Navbar() {
   const { data: session, status } = useSession();
+
+  const handleLogout = async () => {
+    try {
+      await authService.logout();
+    } catch (error) {
+      console.error("Failed to blacklist token on backend:", error);
+    } finally {
+      await signOut({ callbackUrl: "/login" });
+    }
+  };
 
   if (status === "loading") return;
 
@@ -73,7 +84,7 @@ export default function Navbar() {
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => signOut()}
+                onClick={handleLogout}
                 className="text-slate-400 hover:text-red-500"
               >
                 <LogOut className="h-4 w-4" />

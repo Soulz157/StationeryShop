@@ -281,7 +281,7 @@ const brands = [...new Set(products.map((p) => p.brand))];
 const priceRanges = [
   { label: "Under ฿25", min: 0, max: 25 },
   { label: "฿25 - ฿40", min: 25, max: 40 },
-  { label: "$40 - ฿60", min: 40, max: 60 },
+  { label: "฿40 - ฿60", min: 40, max: 60 },
   { label: "Over ฿60", min: 60, max: Infinity },
 ];
 

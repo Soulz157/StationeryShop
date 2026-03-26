@@ -7,4 +7,10 @@ export const authService = {
       method: "POST",
       body: JSON.stringify(data),
     }),
+
+  async logout() {
+    return fetchClient("/api/authorized/auth/logout", {
+      method: "POST",
+    });
+  },
 };

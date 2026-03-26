@@ -12,7 +12,7 @@ import {
   ResponseInterceptor,
   ZodValidationPipe as AppZodValidationPipe,
 } from "@penshop/common";
-import { ProductsModule } from './api/products/products.module';
+import { ProductsModule } from "./api/products/products.module";
 
 @Module({
   imports: [
