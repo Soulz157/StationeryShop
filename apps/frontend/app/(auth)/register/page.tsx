@@ -1,13 +1,13 @@
-"use client";
+'use client'
 
-import Link from "next/link";
-import { PenTool, Check, Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import * as z from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import Link from 'next/link'
+import { PenTool, Check, Loader2 } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import * as z from 'zod'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 import {
   Form,
   FormControl,
@@ -15,44 +15,44 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { useRegister } from "@/hooks/auth/use-register";
+} from '@/components/ui/form'
+import { useRegister } from '@/hooks/auth/use-register'
 
 const formSchema = z
   .object({
     firstName: z
       .string()
-      .min(2, { message: "First name must be at least 2 characters." }),
+      .min(2, { message: 'First name must be at least 2 characters.' }),
     lastName: z
       .string()
-      .min(2, { message: "Last name must be at least 2 characters." }),
-    email: z.string().email({ message: "Invalid email address." }),
+      .min(2, { message: 'Last name must be at least 2 characters.' }),
+    email: z.string().email({ message: 'Invalid email address.' }),
     password: z
       .string()
-      .min(8, { message: "Password must be at least 8 characters." }),
+      .min(8, { message: 'Password must be at least 8 characters.' }),
     confirmPassword: z.string(),
   })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
-  });
+  .refine(data => data.password === data.confirmPassword, {
+    message: 'Passwords do not match',
+    path: ['confirmPassword'],
+  })
 
 export default function RegisterPage() {
-  const { register, isLoading } = useRegister();
+  const { register, isLoading } = useRegister()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
     },
-  });
+  })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    await register(values);
+    await register(values)
   }
   return (
     <div className="flex min-h-screen bg-slate-50 font-sans text-slate-900">
@@ -195,18 +195,18 @@ export default function RegisterPage() {
                       Account...
                     </>
                   ) : (
-                    "Create Account"
+                    'Create Account'
                   )}
                 </Button>
               </form>
             </Form>
 
             <p className="text-center text-xs text-slate-500 mt-4">
-              By signing up, you agree to our{" "}
+              By signing up, you agree to our{' '}
               <Link href="#" className="text-teal-600 hover:underline">
                 Terms of Service
-              </Link>{" "}
-              and{" "}
+              </Link>{' '}
+              and{' '}
               <Link href="#" className="text-teal-600 hover:underline">
                 Privacy Policy
               </Link>
@@ -249,7 +249,7 @@ export default function RegisterPage() {
             </Button>
 
             <p className="text-center text-sm text-slate-500 mt-6">
-              Already have an account?{" "}
+              Already have an account?{' '}
               <Link
                 href="/login"
                 className="text-teal-600 hover:text-teal-700 font-medium"
@@ -302,5 +302,5 @@ export default function RegisterPage() {
         </div>
       </div>
     </div>
-  );
+  )
 }

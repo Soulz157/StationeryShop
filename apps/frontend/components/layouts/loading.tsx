@@ -1,7 +1,7 @@
-import { ArrowLeft } from "lucide-react";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import Link from "next/link";
+import { ArrowLeft } from 'lucide-react'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
+import Link from 'next/link'
 
 export default function AccountSkeleton() {
   return (
@@ -77,5 +77,5 @@ export default function AccountSkeleton() {
         </div>
       </main>
     </div>
-  );
+  )
 }

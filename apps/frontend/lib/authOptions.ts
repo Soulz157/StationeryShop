@@ -1,60 +1,60 @@
-import { NextAuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import { jwtDecode } from "jwt-decode";
+import { NextAuthOptions } from 'next-auth'
+import CredentialsProvider from 'next-auth/providers/credentials'
+import { jwtDecode } from 'jwt-decode'
 
 interface DecodedToken {
-  id: string;
-  email: string;
-  role: string;
-  exp: number;
+  id: string
+  email: string
+  role: string
+  exp: number
 }
 
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
-      name: "Credentials",
+      name: 'Credentials',
       credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
+        email: { label: 'Email', type: 'email' },
+        password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) return null;
+        if (!credentials?.email || !credentials?.password) return null
 
         try {
-          const API_URL = process.env.NEXT_PUBLIC_API_URL;
+          const API_URL = process.env.NEXT_PUBLIC_API_URL
           const res = await fetch(`${API_URL}/api/public/auth/login`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               email: credentials.email,
               password: credentials.password,
             }),
-          });
+          })
 
-          const user = await res.json();
+          const user = await res.json()
 
           if (!res.ok) {
-            throw new Error(user.message || "อีเมลหรือรหัสผ่านไม่ถูกต้อง");
+            throw new Error(user.message || 'อีเมลหรือรหัสผ่านไม่ถูกต้อง')
           }
 
           if (user.data?.accessToken) {
-            const token = user.data.accessToken;
+            const token = user.data.accessToken
 
-            const decoded: DecodedToken = jwtDecode(token);
+            const decoded: DecodedToken = jwtDecode(token)
 
             return {
               id: decoded.id,
               email: decoded.email,
               role: decoded.role,
               accessToken: token,
-            };
+            }
           }
-          return null;
+          return null
         } catch (error) {
           if (error instanceof Error) {
-            throw new Error(error.message);
+            throw new Error(error.message)
           }
-          throw new Error("เกิดข้อผิดพลาดในการเชื่อมต่อ");
+          throw new Error('เกิดข้อผิดพลาดในการเชื่อมต่อ')
         }
       },
     }),
@@ -62,26 +62,26 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.accessToken = user.accessToken;
-        token.id = user.id;
-        token.role = user.role;
+        token.accessToken = user.accessToken
+        token.id = user.id
+        token.role = user.role
       }
-      return token;
+      return token
     },
     async session({ session, token }) {
       if (token) {
-        session.user.id = token.id as string;
-        session.user.role = token.role as string;
-        session.user.accessToken = token.accessToken as string;
+        session.user.id = token.id as string
+        session.user.role = token.role as string
+        session.user.accessToken = token.accessToken as string
       }
-      return session;
+      return session
     },
   },
   session: {
-    strategy: "jwt",
+    strategy: 'jwt',
     maxAge: 24 * 60 * 60,
   },
   pages: {
-    signIn: "/login",
+    signIn: '/login',
   },
-};
+}

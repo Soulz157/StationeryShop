@@ -1,33 +1,35 @@
-"use client";
+'use client'
 
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
 import {
   User,
-  ShoppingCart,
-  LogOut,
   Book,
   Palette,
   PenTool,
   Boxes,
-} from "lucide-react";
-import { useSession, signOut } from "next-auth/react";
-import { authService } from "@/services/auth";
+  LogOut,
+  Settings,
+} from 'lucide-react'
+import { signOut, useSession } from 'next-auth/react'
+import { CartSheet } from '../cart-sheet'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+  DropdownMenuGroup,
+} from '@/components/ui/dropdown-menu'
 
 export default function Navbar() {
-  const { data: session, status } = useSession();
+  const { data: session, status } = useSession()
 
   const handleLogout = async () => {
-    try {
-      await authService.logout();
-    } catch (error) {
-      console.error("Failed to blacklist token on backend:", error);
-    } finally {
-      await signOut({ callbackUrl: "/login" });
-    }
-  };
-
-  if (status === "loading") return;
+    await signOut({ callbackUrl: '/login' })
+  }
+  if (status === 'loading') return null
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/80 backdrop-blur-md">
@@ -69,26 +71,54 @@ export default function Navbar() {
           </Link>
         </nav>
         <div className="flex items-center gap-3">
-          {status === "authenticated" ? (
+          {status === 'authenticated' ? (
             <div className="flex items-center gap-3">
-              <div className="h-9 w-9 rounded-full bg-teal-600 flex items-center justify-center text-white overflow-hidden border border-teal-100 shadow-sm cursor-pointer hover:opacity-80 transition-opacity">
-                <Link href="/account">
-                  <User className="h-5 w-5" />
-                </Link>
-              </div>
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <div className="flex h-9 w-9 cursor-pointer items-center justify-center overflow-hidden rounded-full border border-teal-100 bg-teal-600 text-white shadow-sm transition-opacity hover:opacity-80">
+                    <User className="h-5 w-5" />
+                  </div>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  side="bottom"
+                  align="start"
+                  className="w-56"
+                >
+                  <DropdownMenuGroup>
+                    <DropdownMenuLabel className="font-normal">
+                      <div className="flex flex-col space-y-1">
+                        <p className="text-sm font-medium leading-none">
+                          My Account
+                        </p>
+                        <p className="text-xs leading-none text-slate-500">
+                          {session.user?.email}
+                        </p>
+                      </div>
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem className="cursor-pointer">
+                      <Link href="/account">
+                        <div className="flex items-center">
+                          <Settings className="mr-2 h-4 w-4" />
+                          <span>Account Settings</span>
+                        </div>
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      onClick={handleLogout}
+                      className="cursor-pointer text-red-600 focus:text-red-600 focus:bg-red-50"
+                    >
+                      <LogOut className="mr-2 h-4 w-4" />
+                      <span>Log out</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
 
               <span className="text-sm font-medium text-slate-700 hidden sm:block">
                 {session.user?.email}
               </span>
-
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={handleLogout}
-                className="text-slate-400 hover:text-red-500"
-              >
-                <LogOut className="h-4 w-4" />
-              </Button>
             </div>
           ) : (
             <Link href="/login">
@@ -102,15 +132,9 @@ export default function Navbar() {
               </Button>
             </Link>
           )}
-          <Button
-            variant="outline"
-            size="icon"
-            className="rounded-full border-slate-300 hover:border-teal-400 hover:bg-teal-50"
-          >
-            <ShoppingCart className="h-4 w-4 text-slate-600" />
-          </Button>
+          <CartSheet />
         </div>
       </div>
     </header>
-  );
+  )
 }

@@ -3,10 +3,10 @@ import {
   ExecutionContext,
   Injectable,
   UnauthorizedException,
-} from "@nestjs/common";
-import { PrismaService } from "@penshop/database";
-import { JwtService } from "@nestjs/jwt";
-import { getJwtToken } from "src/utils";
+} from '@nestjs/common'
+import { PrismaService } from '@penshop/database'
+import { JwtService } from '@nestjs/jwt'
+import { getJwtToken } from 'src/utils'
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -16,26 +16,26 @@ export class AuthGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request = context.switchToHttp().getRequest();
-    const token = getJwtToken(request.headers.authorization ?? "");
+    const request = context.switchToHttp().getRequest()
+    const token = getJwtToken(request.headers.authorization ?? '')
     if (!token) {
-      throw new UnauthorizedException("กรุณาเข้าสู่ระบบ");
+      throw new UnauthorizedException('กรุณาเข้าสู่ระบบ')
     }
     const checkToken = await this.prisma.userToken.count({
       where: {
         token: token,
       },
-    });
+    })
 
-    if (checkToken > 0) throw new UnauthorizedException("กรุณาเข้าสู่ระบบ");
+    if (checkToken > 0) throw new UnauthorizedException('กรุณาเข้าสู่ระบบ')
 
     try {
-      const payload = await this.jwtService.verifyAsync(token);
-      request.users = payload;
-      request.users.accessToken = token;
+      const payload = await this.jwtService.verifyAsync(token)
+      request.users = payload
+      request.users.accessToken = token
     } catch {
-      throw new UnauthorizedException("กรุณาเข้าสู่ระบบ");
+      throw new UnauthorizedException('กรุณาเข้าสู่ระบบ')
     }
-    return true;
+    return true
   }
 }

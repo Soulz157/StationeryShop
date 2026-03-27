@@ -1,18 +1,18 @@
-import { Test, TestingModule } from "@nestjs/testing";
-import { CartPublicController } from "./cart-public.controller";
+import { Test, TestingModule } from '@nestjs/testing'
+import { CartPublicController } from './cart-public.controller'
 
-describe("CartPublicController", () => {
-  let controller: CartPublicController;
+describe('CartPublicController', () => {
+  let controller: CartPublicController
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [CartPublicController],
-    }).compile();
+    }).compile()
 
-    controller = module.get<CartPublicController>(CartPublicController);
-  });
+    controller = module.get<CartPublicController>(CartPublicController)
+  })
 
-  it("should be defined", () => {
-    expect(controller).toBeDefined();
-  });
-});
+  it('should be defined', () => {
+    expect(controller).toBeDefined()
+  })
+})

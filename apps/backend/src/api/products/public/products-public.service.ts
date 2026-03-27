@@ -1,6 +1,7 @@
-import { Injectable } from "@nestjs/common";
-import { PrismaService } from "@penshop/database";
-import { AppException } from "@penshop/common";
+import { Injectable } from '@nestjs/common'
+import { PrismaService } from '@penshop/database'
+import { AppException } from '@penshop/common'
+import { CheckStockDto } from './dto/products.public.dto'
 
 @Injectable()
 export class ProductsPublicService {
@@ -12,20 +13,57 @@ export class ProductsPublicService {
         isActive: true,
         deletedAt: null,
       },
-    });
+    })
 
     if (!products) {
       throw new AppException({
         statusCode: 404,
-        message: "ไม่พบสินค้า",
-        type: "ERROR",
-      });
+        message: 'ไม่พบสินค้า',
+        type: 'ERROR',
+      })
     }
 
     return {
       statusCode: 200,
-      message: "ดึงข้อมูลสำเร็จ",
+      message: 'ดึงข้อมูลสำเร็จ',
       data: products,
-    };
+    }
+  }
+
+  async checkStockService(items: CheckStockDto[]) {
+    const ids = items.map(i => i.productId)
+
+    const products = await this.prisma.product.findMany({
+      where: { id: { in: ids } },
+    })
+
+    return items.map(item => {
+      const product = products.find(p => p.id === item.productId)
+
+      if (!product) {
+        return {
+          statusCode: 404,
+          message: 'ไม่พบสินค้า',
+          data: {
+            productId: item.productId,
+            available: false,
+            currentStock: 0,
+            requestedQty: item.quantity,
+          },
+          type: 'ERROR',
+        }
+      }
+
+      return {
+        statusCode: 200,
+        message: 'ดึงข้อมูลสำเร็จ ' + item.productId,
+        data: {
+          productId: item.productId,
+          available: product.stock >= item.quantity,
+          currentStock: product.stock,
+          requestedQty: item.quantity,
+        },
+      }
+    })
   }
 }

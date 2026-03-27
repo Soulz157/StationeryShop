@@ -1,7 +1,18 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {},
-  transpilePackages: ["@penshop/database"],
-};
+  transpilePackages: ['@penshop/database'],
+  images: {
+    dangerouslyAllowLocalIP: true,
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '4000',
+        pathname: '/public/uploads/**',
+      },
+    ],
+  },
+}
 
-export default nextConfig;
+export default nextConfig

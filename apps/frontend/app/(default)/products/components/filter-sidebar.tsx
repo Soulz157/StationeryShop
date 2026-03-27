@@ -1,23 +1,22 @@
-// components/FilterSidebar.tsx
-import { Search } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Button } from "@/components/ui/button";
+import { Search } from 'lucide-react'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Button } from '@/components/ui/button'
 
 interface FilterSidebarProps {
-  searchQuery: string;
-  setSearchQuery: (query: string) => void;
-  brands: string[];
-  selectedBrands: string[];
-  toggleBrand: (brand: string) => void;
-  priceRanges: { label: string; min: number; max: number }[];
-  selectedPriceRanges: number[];
-  togglePriceRange: (index: number) => void;
-  inStockOnly: boolean;
-  setInStockOnly: (checked: boolean) => void;
-  clearFilters: () => void;
-  activeFiltersCount: number;
+  searchQuery: string
+  setSearchQuery: (query: string) => void
+  brands: string[]
+  selectedBrands: string[]
+  toggleBrand: (brand: string) => void
+  priceRanges: { label: string; min: number; max: number }[]
+  selectedPriceRanges: number[]
+  togglePriceRange: (index: number) => void
+  inStockOnly: boolean
+  setInStockOnly: (checked: boolean) => void
+  clearFilters: () => void
+  activeFiltersCount: number
 }
 
 export default function FilterSidebar({
@@ -46,7 +45,7 @@ export default function FilterSidebar({
           <Input
             placeholder="Search products..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={e => setSearchQuery(e.target.value)}
             className="pl-10 border-slate-200 focus-visible:ring-teal-500"
           />
         </div>
@@ -58,7 +57,7 @@ export default function FilterSidebar({
           Brands
         </Label>
         <div className="space-y-2">
-          {brands.map((brand) => (
+          {brands.map(brand => (
             <div key={brand} className="flex items-center gap-2">
               <Checkbox
                 id={`brand-${brand}`}
@@ -111,7 +110,7 @@ export default function FilterSidebar({
           <Checkbox
             id="in-stock"
             checked={inStockOnly}
-            onCheckedChange={(checked) => setInStockOnly(checked as boolean)}
+            onCheckedChange={checked => setInStockOnly(checked as boolean)}
             className="border-slate-300 data-[state=checked]:bg-teal-600 data-[state=checked]:border-teal-600"
           />
           <Label
@@ -134,5 +133,5 @@ export default function FilterSidebar({
         </Button>
       )}
     </div>
-  );
+  )
 }

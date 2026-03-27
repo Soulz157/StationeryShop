@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { Button } from '@/components/ui/button'
+import { ArrowRight } from 'lucide-react'
 
 export default function BestSeller() {
   return (
@@ -101,5 +101,5 @@ export default function BestSeller() {
         </div>
       </div>
     </section>
-  );
+  )
 }

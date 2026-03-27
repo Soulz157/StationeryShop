@@ -1,17 +1,16 @@
-import { ArrowRight, Book, Palette, PenTool } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import Link from "next/link";
-import FeatureCategory from "./components/feature-category";
-import BestSeller from "./components/best-seller";
+import { ArrowRight } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import Link from 'next/link'
+import FeatureCategory from './components/feature-category'
+import BestSeller from './components/best-seller'
 
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/lib/authOptions";
+import { getServerSession } from 'next-auth/next'
+import { authOptions } from '@/lib/authOptions'
 
 export default async function Home() {
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession(authOptions)
 
-  const isAuthenticated = !!session;
+  const isAuthenticated = !!session
   return (
     <div className="flex flex-col min-h-screen bg-slate-50 font-sans text-slate-900">
       <main className="flex-1 w-full">
@@ -95,5 +94,5 @@ export default async function Home() {
         </section> */}
       </main>
     </div>
-  );
+  )
 }

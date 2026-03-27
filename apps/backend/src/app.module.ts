@@ -1,25 +1,31 @@
-import { Module } from "@nestjs/common";
-import { ConfigModule } from "@nestjs/config";
-import { JwtModule } from "@nestjs/jwt";
-import { PrismaModule } from "@penshop/database";
-import { OrdersModule } from "./api/orders/orders.module";
-import { CartModule } from "./api/cart/cart.module";
-import { HttpModule } from "@nestjs/axios";
-import { AuthModule } from "./api/auth/auth.module";
-import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from "@nestjs/core";
+import { Module } from '@nestjs/common'
+import { ConfigModule } from '@nestjs/config'
+import { JwtModule } from '@nestjs/jwt'
+import { PrismaModule } from '@penshop/database'
+import { OrdersModule } from './api/orders/orders.module'
+import { CartModule } from './api/cart/cart.module'
+import { HttpModule } from '@nestjs/axios'
+import { AuthModule } from './api/auth/auth.module'
+import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
 import {
   AllExceptionsFilter,
   ResponseInterceptor,
   ZodValidationPipe as AppZodValidationPipe,
-} from "@penshop/common";
-import { ProductsModule } from "./api/products/products.module";
+} from '@penshop/common'
+import { ProductsModule } from './api/products/products.module'
+import { ServeStaticModule } from '@nestjs/serve-static'
+import { join } from 'path'
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(process.cwd(), 'public'),
+      serveRoot: '/public',
+    }),
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: "1d" },
+      signOptions: { expiresIn: '1d' },
     }),
     ConfigModule.forRoot({
       isGlobal: true,

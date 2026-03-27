@@ -1,10 +1,10 @@
-"use client";
-import { Navbar, Footer } from "@/components/layouts";
+'use client'
+import { Navbar, Footer } from '@/components/layouts'
 
 export default function Layout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
     <>
@@ -12,5 +12,5 @@ export default function Layout({
       <div className="min-h-[70vh]">{children}</div>
       <Footer />
     </>
-  );
+  )
 }

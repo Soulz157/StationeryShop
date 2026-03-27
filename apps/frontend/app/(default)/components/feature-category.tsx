@@ -1,5 +1,5 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { Book, Palette, PenTool } from "lucide-react";
+import { Card, CardContent } from '@/components/ui/card'
+import { Book, Palette, PenTool } from 'lucide-react'
 
 export default function FeatureCategory() {
   return (
@@ -50,5 +50,5 @@ export default function FeatureCategory() {
         </Card>
       </div>
     </section>
-  );
+  )
 }

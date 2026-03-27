@@ -1,33 +1,33 @@
-"use client";
+'use client'
 
-import Link from "next/link";
-import { Form, FormLabel, FormField, FormMessage } from "@/components/ui/form";
-import { PenTool, Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import Link from 'next/link'
+import { Form, FormLabel, FormField, FormMessage } from '@/components/ui/form'
+import { PenTool, Loader2 } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 
 import {
   useAuth,
   loginSchema,
   type LoginFormValues,
-} from "@/hooks/auth/use-auth";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+} from '@/hooks/auth/use-auth'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 export default function LoginPage() {
-  const { login, isLoading } = useAuth();
+  const { login, isLoading } = useAuth()
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
-  });
+  })
 
   async function onSubmit(values: LoginFormValues) {
-    await login(values);
+    await login(values)
   }
 
   return (
@@ -124,7 +124,7 @@ export default function LoginPage() {
                       In...
                     </>
                   ) : (
-                    "Sign In"
+                    'Sign In'
                   )}
                 </Button>
               </form>
@@ -167,7 +167,7 @@ export default function LoginPage() {
             </Button>
 
             <p className="text-center text-sm text-slate-500 mt-6">
-              Don&apos;t have an account?{" "}
+              Don&apos;t have an account?{' '}
               <Link
                 href="/register"
                 className="text-teal-600 hover:text-teal-700 font-medium"
@@ -179,5 +179,5 @@ export default function LoginPage() {
         </Card>
       </div>
     </div>
-  );
+  )
 }

@@ -1,7 +1,7 @@
-import { z } from "zod";
-import { createZodDto } from "nestjs-zod";
-import { createStandardResponseSchema } from "src/libs/dto";
-import { Role } from "@penshop/database/dist/generated/client/enums";
+import { z } from 'zod'
+import { createZodDto } from 'nestjs-zod'
+import { createStandardResponseSchema } from 'src/libs/dto'
+import { Role } from '@penshop/database/dist/generated/client/enums'
 
 export const GetMeResponseSchema = createStandardResponseSchema(
   z.object({
@@ -14,7 +14,7 @@ export const GetMeResponseSchema = createStandardResponseSchema(
     createdAt: z.date(),
     updatedAt: z.date(),
   }),
-).strict();
+).strict()
 
 export const LogoutResponseSchema = createStandardResponseSchema(
   z
@@ -22,7 +22,7 @@ export const LogoutResponseSchema = createStandardResponseSchema(
       message: z.string(),
     })
     .nullable(),
-);
+)
 
 export const EditRequestSchema = z
   .object({
@@ -32,7 +32,7 @@ export const EditRequestSchema = z
     role: z.nativeEnum(Role).optional(),
     phone: z.string().optional(),
   })
-  .strict();
+  .strict()
 
 export class GetMeResponseDto extends createZodDto(GetMeResponseSchema) {}
 export class LogoutResponseDto extends createZodDto(LogoutResponseSchema) {}
