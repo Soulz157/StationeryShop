@@ -2,6 +2,8 @@
 import Link from 'next/link'
 import { Card, CardContent } from '@/components/ui/card'
 import type { Product } from '@/types/product'
+import { getImageUrl } from '@/lib/image'
+import Image from 'next/image'
 
 export function RelatedProducts({ products }: { products: Product[] }) {
   if (products.length === 0) return null
@@ -16,7 +18,13 @@ export function RelatedProducts({ products }: { products: Product[] }) {
           <Link key={p.id} href={`/products/${p.id}`}>
             <Card className="group overflow-hidden border-slate-200 hover:border-teal-300 transition-all hover:shadow-lg">
               <div className="aspect-square bg-gradient-to-br from-slate-100 to-slate-50 flex items-center justify-center">
-                <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-teal-100 to-cyan-100 group-hover:scale-110 transition-transform" />
+                <Image
+                  src={getImageUrl(p.imgUrl)}
+                  alt={p.name}
+                  width={200}
+                  height={200}
+                  className="object-cover"
+                />
               </div>
               <CardContent className="p-4">
                 <p className="text-xs text-teal-600 font-medium">{p.brand}</p>

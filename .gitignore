@@ -34,3 +34,6 @@ Thumbs.db
 .idea
 *.swp
 *.swo
+
+# Uploads
+apps/backend/public/uploads/*

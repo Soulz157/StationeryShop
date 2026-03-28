@@ -13,6 +13,9 @@ export class ProductsPublicService {
         isActive: true,
         deletedAt: null,
       },
+      include: {
+        category: true,
+      },
     })
 
     if (!products) {
@@ -26,7 +29,21 @@ export class ProductsPublicService {
     return {
       statusCode: 200,
       message: 'ดึงข้อมูลสำเร็จ',
-      data: products,
+      data: {
+        products: products.map(product => ({
+          id: product.id,
+          name: product.name,
+          description: product.description,
+          imgUrl: product.imgUrl,
+          price: product.price,
+          stock: product.stock,
+          category: product.category.name,
+          brand: product.brand,
+          rating: product.rating,
+          isActive: product.isActive,
+          tags: product.tags,
+        })),
+      },
     }
   }
 

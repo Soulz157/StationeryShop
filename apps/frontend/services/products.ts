@@ -8,5 +8,5 @@ export async function fetchProducts(): Promise<Product[]> {
     throw new Error('Failed to fetch products')
   }
   const data = await response.json()
-  return data.data
+  return data.data.products
 }

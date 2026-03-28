@@ -55,7 +55,7 @@ export function CartSheet() {
         }
       }
 
-      router.push('/checkout')
+      router.push('/orders')
     } catch (error) {
       console.error('Checkout failed', error)
       if (error instanceof Error) {

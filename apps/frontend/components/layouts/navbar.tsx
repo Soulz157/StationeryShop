@@ -60,7 +60,7 @@ export default function Navbar() {
             className="text-slate-600 hover:text-teal-600 transition-colors flex items-center"
           >
             <Palette className="h-4 w-4 mr-2" />
-            Art & Craft
+            Art Supplies
           </Link>
           <Link
             href="/products?category=accessories"

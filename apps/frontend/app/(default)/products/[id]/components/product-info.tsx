@@ -13,7 +13,7 @@ import {
   Shield,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
+// import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { useCart } from '@/stores/cart'
 import type { Product } from '@/types/product'
@@ -22,7 +22,24 @@ export function ProductInfo({ product }: { product: Product }) {
   const [quantity, setQuantity] = useState(1)
   const [isWishlisted, setIsWishlisted] = useState(false)
   const [addedToCart, setAddedToCart] = useState(false)
+
+  const [hoveredRating, setHoveredRating] = useState(0)
+  const [userRating, setUserRating] = useState(0)
+  const [isRatingSubmitting, setIsRatingSubmitting] = useState(false)
   const { addToCart } = useCart()
+
+  const handleRateProduct = async (selectedRating: number) => {
+    if (isRatingSubmitting) return
+    try {
+      setIsRatingSubmitting(true)
+      setUserRating(selectedRating)
+    } catch (error) {
+      console.error('โหวตไม่สำเร็จ', error)
+      setUserRating(0)
+    } finally {
+      setIsRatingSubmitting(false)
+    }
+  }
 
   const handleAddToCart = () => {
     for (let i = 0; i < quantity; i++) {
@@ -40,6 +57,8 @@ export function ProductInfo({ product }: { product: Product }) {
     setTimeout(() => setAddedToCart(false), 2000)
   }
 
+  const currentDisplayRating = userRating || Math.round(product.rating || 0)
+
   return (
     <div className="space-y-6">
       <div>
@@ -52,28 +71,44 @@ export function ProductInfo({ product }: { product: Product }) {
         <p className="text-slate-500 mt-2">{product.description}</p>
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-3">
         <div className="flex items-center gap-0.5">
-          {[1, 2, 3, 4, 5].map(star => (
-            <Star
-              key={star}
-              className={`h-4 w-4 ${star <= 4 ? 'fill-amber-400 text-amber-400' : 'fill-slate-200 text-slate-200'}`}
-            />
-          ))}
+          {[1, 2, 3, 4, 5].map(star => {
+            const isFilled = hoveredRating
+              ? star <= hoveredRating
+              : star <= currentDisplayRating
+
+            return (
+              <Star
+                key={star}
+                onMouseEnter={() => setHoveredRating(star)}
+                onMouseLeave={() => setHoveredRating(0)}
+                onClick={() => handleRateProduct(star)}
+                className={`h-5 w-5 cursor-pointer transition-all ${
+                  isFilled
+                    ? 'fill-amber-400 text-amber-400 scale-110'
+                    : 'fill-slate-200 text-slate-200 hover:text-amber-200'
+                }`}
+              />
+            )
+          })}
         </div>
-        <span className="text-sm text-slate-500">(4.0) 128 reviews</span>
+        <span className="text-sm font-medium text-slate-700">
+          {(product.rating || 0).toFixed(1)}
+        </span>
+        <span className="text-sm text-slate-500">(128 reviews) </span>
       </div>
 
       <div className="flex items-baseline gap-3">
         <span className="text-3xl font-bold text-slate-800">
           ${product.price.toFixed(2)}
         </span>
-        <span className="text-lg text-slate-400 line-through">
+        {/* <span className="text-lg text-slate-400 line-through">
           ${(product.price * 1.2).toFixed(2)}
         </span>
         <Badge className="bg-teal-100 text-teal-700 hover:bg-teal-100">
           Save 20%
-        </Badge>
+        </Badge> */}
       </div>
 
       <Separator className="bg-slate-200" />

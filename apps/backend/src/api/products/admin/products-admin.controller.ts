@@ -26,8 +26,8 @@ import { Roles } from 'src/common/decorators/role.decorator'
 import { RolesGuard } from 'src/common/guards/role.guard'
 
 @UseGuards(AuthGuard, RolesGuard)
-@ApiTags('products-admin')
 @Controller('admin/products')
+@ApiTags('products-admin')
 @ApiBearerAuth()
 @Roles('ADMIN')
 export class ProductsAdminController {
@@ -62,6 +62,7 @@ export class ProductsAdminController {
       ...args,
       imgUrl: file ? `/uploads/products/${file.filename}` : '',
     }
+    console.log(productData)
     return this.productsAdminService.updateProductService(user, productData)
   }
 
